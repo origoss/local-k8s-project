@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: argocd
+  annotations:
+    cert-manager.io/issuer: selfsigned-cluster-issuer
+spec:
+  rules:
+  - host: argocd.test-cluster
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - argocd.test-cluster
+    secretName: argocd-tls
+status:
+  loadBalancer: {}
